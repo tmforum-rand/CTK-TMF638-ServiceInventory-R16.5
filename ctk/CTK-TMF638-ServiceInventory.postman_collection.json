@@ -1,0 +1,1365 @@
+{
+	"info": {
+		"_postman_id": "4bde9f66-5c2e-4085-b14b-375976fcd5cc",
+		"name": "CTK-TMF638-ServiceInventory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TC_ServiceInventory_N0 - Preparation",
+			"item": [
+				{
+					"name": "Set ID's if not manually set on the envirionment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd59236d-9f6e-4464-9afa-2315ba1f9d6a",
+								"exec": [
+									"console.log(\"IDSI01 = \"+pm.globals.get(\"IDSI01\"));",
+									"",
+									"if (pm.environment.get(\"IDSI01\") === undefined && pm.response.to.have.status(200)){",
+									"    var jsonData = pm.response.json();",
+									"// TODO: jsonData might be an array of resources - need to detect and iterate if so",
+									"    if (Array.isArray(jsonData) && (jsonData.length > 1)) {",
+									"        pm.globals.set(\"IDSI01\", jsonData[0].id);",
+									"        pm.globals.set(\"IDSI02\", jsonData[1].id);",
+									"        pm.test(\"IDSI01 and IDSI02 set\", function () {",
+									"            return true;",
+									"        });",
+									"    }",
+									"    else {",
+									"        pm.test(\"An array with at least 2 elements is expected to run this tests, if your API can't return an Array, follow the documentation distributed togheter with this CTK and set the globals IDSI01 and IDSI02 manually\", function () {",
+									"           pm.expect(0).to.eql(1)",
+									"    });",
+									"        ",
+									"    }",
+									"}",
+									"    ",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								""
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": [
+						{
+							"name": "Set ID's if not manually set on the envirionment",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;charset=utf-8"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json;charset=utf-8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{ServiceInventoryAPI}}/service/",
+									"host": [
+										"{{ServiceInventoryAPI}}"
+									],
+									"path": [
+										"service",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "no-cache,no-store,must-revalidate",
+									"name": "Cache-Control",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"key": "Connection",
+									"value": "close",
+									"name": "Connection",
+									"description": "Options that are desired for the connection"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip",
+									"name": "Content-Encoding",
+									"description": "The type of encoding used on the data."
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8",
+									"name": "Content-Type",
+									"description": "The mime type of this content"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 24 Sep 2018 06:39:04 GMT",
+									"name": "Date",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"key": "Expires",
+									"value": "0",
+									"name": "Expires",
+									"description": "Gives the date/time after which the response is considered stale"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache",
+									"name": "Pragma",
+									"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 [; includeSubdomains]",
+									"name": "Strict-Transport-Security",
+									"description": "A HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains."
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"name": "Transfer-Encoding",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding",
+									"name": "Vary",
+									"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff",
+									"name": "X-Content-Type-Options",
+									"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN",
+									"name": "X-Frame-Options",
+									"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+								},
+								{
+									"key": "X-NC-SSLMode",
+									"value": "permanent",
+									"name": "X-NC-SSLMode",
+									"description": "Custom header"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block",
+									"name": "X-XSS-Protection",
+									"description": "Cross-site scripting (XSS) filter"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Tue Jan 19 2038 08:44:07 GMT+0530 (India Standard Time)",
+									"httpOnly": true,
+									"domain": "devapp197.netcracker.com",
+									"path": "/",
+									"secure": false,
+									"value": "GaAKPaNCv3NK17RucM-t3iCkaBq3OnNWhBcoUHzxe1zPFXlyI2Rx!1985951942",
+									"key": "JSESSIONID"
+								},
+								{
+									"expires": "Tue Jan 19 2038 08:44:07 GMT+0530 (India Standard Time)",
+									"httpOnly": true,
+									"domain": "devapp197.netcracker.com",
+									"path": "/",
+									"secure": false,
+									"value": "L2ludmVudG9yeU1hbmFnZW1lbnQvMi4w",
+									"key": "netcracker_from_url_f65a585e-20d9-4728-92c7-9fe2584e5f53"
+								},
+								{
+									"expires": "Tue Jan 19 2038 08:44:07 GMT+0530 (India Standard Time)",
+									"httpOnly": true,
+									"domain": "devapp197.netcracker.com",
+									"path": "/",
+									"secure": false,
+									"value": "L2ludmVudG9yeU1hbmFnZW1lbnQvMi4w",
+									"key": "netcracker_from_url_c61d2843-7648-49a0-8b34-d0a80e7eab12"
+								},
+								{
+									"expires": "Tue Jan 19 2038 08:44:07 GMT+0530 (India Standard Time)",
+									"httpOnly": true,
+									"domain": "devapp197.netcracker.com",
+									"path": "/",
+									"secure": false,
+									"value": "L2ludmVudG9yeU1hbmFnZW1lbnQvMi4w",
+									"key": "netcracker_from_url_43299b44-17e9-48d2-b968-9d5e987bc873"
+								},
+								{
+									"expires": "Tue Jan 19 2038 08:44:07 GMT+0530 (India Standard Time)",
+									"httpOnly": true,
+									"domain": "devapp197.netcracker.com",
+									"path": "/",
+									"secure": false,
+									"value": "L2ludmVudG9yeU1hbmFnZW1lbnQvMi4w",
+									"key": "netcracker_from_url_92ad624b-d64d-4afb-bd46-35421d0cf630"
+								}
+							],
+							"body": "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\r\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n<title>NetCracker 11.0.0</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" />\r\n<meta http-equiv=\"Expires\" content=\"0\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/tree_rev568.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"/skins/harvard/main_rev805.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"/main_ex_rev16872.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" media=\"print\" href=\"/skins/harvard/print_rev805.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" media=\"print\" href=\"/print_ex_rev16872.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/sidebar_rev16872.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"/others_rev16872.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/logoffer_rev16872.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/platform/ui/components/referenceselector/styles/refsel.css?cache=1537526704077\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/thirdparty/org.webjars.bower/perfect-scrollbar/0.6.11/perfect-scrollbar.min.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/skins/harvard/navtree_rev805.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/uiplugins/styles/messages-notifications_rev19058.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/uiplugins/styles/messages-tray_rev19058.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/uiplugins/styles/messages-confirmations_rev19058.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/scripts/jquery/jquery-ui/jquery-ui-1.9.1.custom_rev19058.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/uiplugins/styles/uiplugins_rev19058.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles/jquery/form-styler/jquery.formstyler.multipleselect_rev19058.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/applications/inventory/wizard/style/dcwglobal.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/styles/mhm_tree_style.css\" />\r\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/cihm/css/cihm.css\" />\r\n<script type=\"text/javascript\">\n/* <![CDATA[ */\nif (typeof window.jsRes == 'undefined') {window.jsRes = {};}jsRes[\"9146568720113632653\"]=\"Instance can`t be suspended\";\njsRes[\"9146473725113609995\"]=\"Are you sure you want to delete selected object(s)?\";\njsRes[\"9146568061313632139\"]=\"Specification that was used to create instance %s doesn`t exist. Instance can`t be suspended\";\njsRes[\"9146447749613599664\"]=\"Catalog release \\\"%s\\\" cannot be deleted because it is used by the system\";\njsRes[\"9146448435013600572\"]=\"Specification will be permanently deleted with all archived versions. Remove the selected object?\";\njsRes[\"9146568718813632652\"]=\"Instance can`t be disconnected\";\njsRes[\"9146568721313632654\"]=\"Instance can`t be restored\";\njsRes[\"9146448357913600370\"]=\"Catalog release will be permanently deleted from the system. Remove the selected object(s)?\";\njsRes[\"9146568059813632138\"]=\"Specification that was used to create instance %s doesn`t exist. Instance can`t be modified\";\njsRes[\"9146543179013628433\"]=\"Unable to delete specification version in the \\'Active\\' status which has a previous version. Please, withdraw the specification version\";\njsRes[\"9146568067213632141\"]=\"Specification that was used to create instance %s doesn`t exist. Instance can`t be restored\";\njsRes[\"9146568716513632651\"]=\"Instance can`t be modified\";\njsRes[\"9146352977813572770\"]=\"Are you sure you want to create new catalog release?\";\njsRes[\"9146464928913607391\"]=\"Cannot delete specification version\";\njsRes[\"9146465100713607510\"]=\"Delete the selected object?\";\njsRes[\"9146568064713632140\"]=\"Specification that was used to create instance %s doesn`t exist. Instance can`t be disconnected\";\njsRes[\"9146447765313599665\"]=\"Component group \\\"%s\\\" cannot be deleted because it contains archived component\";\n/* ]]> */\n</script>\r\n<script type=\"text/javascript\">\n/* <![CDATA[ */\nif (!window.ncTheme) {\n\twindow.ncTheme = {\n\t\tgetCurrentTheme : function() {\n\t\t\tvar theme = {\"name\":\"UI Theme\",\"description\":\"Toms UI Theme\",\"id\":\"tomsbase\",\"parentTheme\":null};\n\t\t\treturn theme;\n\t\t}\n\t};\n}\n\n/* ]]> */\n</script>\r\n<script type=\"text/javascript\" src=\"/scripts/prototype.js\"></script>\r\n<script type=\"text/javascript\" src=\"/cihm/tools/getJavaScripts.jsp?bundle_id=9135786208313140170\"></script>\r\n<script type=\"text/javascript\" src=\"/platform/wfm/jm/scripts/jeopardyTaskList.js\"></script>\r\n<script type=\"text/javascript\" src=\"/scripts/wfscripts.js\"></script>\r\n<base target=\"_self\"></base>\r\n</head>\n<body class=\"cambridgeDesign\">\n\n<!-- logo and top menu -->\n<div class=\"top\" role=\"application\">\n<div class=\"top-outer\"><div class=\"top-inner\"><div class=\"top-item top-item-logo\">    <a href=\"/startpage.jsp\" class=\"logo\" title=\"Netcracker Homepage\"></a></div><div class=\"top-item top-item-menu\">    <ul class=\"nav\" role=\"menubar\">\n    </ul>\n</div></div></div></div>\n<div class=\"nmt-panel\">\n<div class=\"nmt-panel-inner\">\n</div>\n</div>\n<div id=\"nc-workplace\" class=\"workplace\">\n<div id=\"nc-header\" class=\"header\">\n            <div class=\"objInfo\" role=\"application\">\n                <h1><span class=\"title\">NetCracker 11.0.0</span></h1>\n                <div class=\"clear\"></div>\n            </div>\n</div>\n<div class=\"cim-sidebar\">\n<ul class=\"cim-tabs\">\n    <li id=\"id_tab_0\" class=\"cim-active-item\"><a href=\"#\">Log In</a></li>\n</ul>\n\t\t<div id=\"resizer\"></div>\n\t</div>        <div id=\"nc-content\" class=\"content page-scroll\">\n\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n\nwindow.setHeaderHeight();\n/* ]]> */\n</script>\n            <div class=\"inner genTable\">\n\n<img src=\"/img/e.gif\" height=\"16\" width=\"1\" alt=\"\" /><table width=\"95%\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td><div class=\"login\">\n<form id=\"theform\" name=\"theform\" action=\"/login.jsp\" autocomplete=\"off\" method=\"post\">\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"loginBodyContainer\">\n<tr><td>\n<tr><td><p><label for=\"user\"/>Username</label><input type=\"text\" name=\"user\" id=\"user\" autocomplete=\"off\" value=\"\"/></p>\n<p><label for=\"pass\"/>Password</label><input type=\"password\" name=\"pass\" id=\"pass\" autocomplete=\"off\"/></p>\n<div class=\"buttonOuter\" onclick=\"this.childNodes[1].click();\" id=\"login_button\"><div class=\"buttonInner\"><a href=\"#\">Log In</a></div><input type=\"submit\" class=\"loginHiddenButton\" onclick=\"return do_login('default','')\" /></div>\n</td></tr></table>\n<input type=\"hidden\" name=\"redirectKey\" id=\"redirectKey\" value=\"netcracker_from_url_92ad624b-d64d-4afb-bd46-35421d0cf630\"/><input type=\"hidden\" name=\"utcdelta\" id=\"utcdelta\" value=\"0\"/><input type=\"hidden\" name=\"button_id\" id=\"button_id\" value=\"\"/><input type=\"hidden\" name=\"login\" id=\"login\" value=\"login\"/>\n</form>\n</div>\n<div></br>\n\n</div>\n<script type=\"text/javascript\" defer=\"defer\">\n/* <![CDATA[ */\n    var isLoginDone = false;\n    function do_login(login_type, button_id) {\n      if(!isLoginDone) {\n        $('utcdelta').value = new Date().getTimezoneOffset(); \n        $('button_id').value =button_id;\n        if ($('user') && $('user').value.length>200){\n          alert(\"Wrong Login value\");\n          return false;}\n        if ($('pass')&& $('pass').value.length>200){\n          alert(\"Wrong Password value\");\n          return false;}\n        if(login_type == 'loginnt') { \n          $('login').value =\"loginnt.x\";\n        }\n        else if(login_type != 'default')\n        {\n          $('login').value =\"undefined\";\n        }\n          isLoginDone = true;\n\t     return true;      }\n\t   return false;    }\n    $('user').focus();\n/* ]]> */\n</script>\t<script type=\"text/javascript\">\t\t/**\n\t\t\tStart timer.\n\t\t\t@param timeout is a timeout in seconds\t\n\t\t*/\n\t\tvar intervalId;\n\t\tfunction startTimer(timeout)\n\t\t{\n\t\t\tif(timeout < 0)\n\t\t\t\treturn;\n\t\t\tvar h = Math.floor(timeout/3600);\n\t\t\tvar m = Math.floor((timeout - h*3600)/60);\n\t\t\tvar s = timeout - h*3600 - m*60;\n\t\t\t\n\t\t\tif(h < 10)\n\t\t\t\th = \"0\" + h;\n\t\t\tif(m < 10)\n\t\t\t\tm = \"0\" + m;\n\t\t\tif(s < 10)\n\t\t\t\ts = \"0\" + s;\n\n\t\t\tvar captchaElement = document.getElementById(\"captcha_timer\");\n\t\t\tcaptchaElement.innerHTML = h+\":\"+m+\":\"+s;\n\t\t\tintervalId = setInterval(timerFunction, 1000);\n\t\t\t\t\tfunction timerFunction()\n\t\t\t{\n\t\t\t\tif (s == 0)\n\t\t\t\t{\n\t\t\t\t\tif (m == 0)\n\t\t\t\t\t{\n\t\t\t\t\t\tif (h == 0)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\trefreshCaptcha();\n\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t}\n\t\t\t\t\t\th--;\n\t\t\t\t\t\tm = 60;\n\t\t\t\t\t\tif (h < 10) h = \"0\" + h;\n\t\t\t\t\t}\n\t\t\t\t\tm--;\n\t\t\t\t\tif (m < 10) m = \"0\" + m;\n\t\t\t\t\ts = 59;\n\t\t\t\t}\n\t\t\t\telse\n\t\t\t\t\ts--;\n\t\t\t\tif (s < 10)\n\t\t\t\t\ts = \"0\" + s;\n\t\t\t\tcaptchaElement.innerHTML = h+\":\"+m+\":\"+s;\n\t\t\t}\n\t\t}\n\t\tfunction refreshCaptcha()\n\t\t{\n\t\t\tclearInterval(intervalId);\n\n\t\t\tdocument.getElementById(\"captchaImage\").src =\"/jcaptcha?\"+Math.random();\n\t\t\tstartTimer(120);\n\t\t}\n\t</script>\n<script type=\"text/javascript\">startTimer(120);</script>\n<script type=\"text/javascript\">\nvar ss = window.sessionStorage;\nif (ss) {\n    var key;\n    for (var i = ss.length-1; i >= 0; i--) {\n        key = ss.key(i);\n        if (key.indexOf(\"navigationTree\") != -1) ss.removeItem(key);\n    }\n}\n</script>\n</td></tr></table><img src=\"/img/e.gif\" height=\"16\" width=\"1\" alt=\"\" />\n\n            <div class=\"ghost\"></div>\n        </div>\n<div class=\"footer\">&copy; Copyright 2000-2017 NetCracker Technology Corp. All rights reserved</div>\n   </div>\n</div>\n<script type=\"text/javascript\">\n/* <![CDATA[ */\nvar PageDescriptor = {rest_weekStartDay:'0',statisticsEnabled:'false',exportAllXml:'<Page />',pageReloadingOnBackInMobileSafari:'false',GWTErrorRecording:'false'};/* ]]> */\n</script><script type=\"text/javascript\">\n/* <![CDATA[ */\n\nif(window.setCharsetConfig) setCharsetConfig('utf-8',3);/* ]]> */\n</script><script type=\"text/javascript\">\n/* <![CDATA[ */\n/* ]]> */\n</script>\n<script type=\"text/javascript\">\n/* <![CDATA[ */\nif (typeof Hook_OnLoad != 'undefined') Hook_OnLoad.add_hook( function(){\nBackgroundAttributeLoader.startLoad();\n});\nif (typeof Hook_BeforeUnload != 'undefined') Hook_BeforeUnload.add_hook( function(){\nBackgroundAttributeLoader.cancelRequest();\n});\n/* ]]> */\n</script>\n<script type=\"text/javascript\">\n/* <![CDATA[ */\nif (typeof Hook_OnLoad != 'undefined') Hook_OnLoad.add_hook( function(){\n      checkAndScrollPage()});\n/* ]]> */\n</script>\n</body>\n</html>\n"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "TC_ServiceInventory_N0 - Preparation Copy",
+			"item": [
+				{
+					"name": "Set ID's if not manually set on the envirionment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd59236d-9f6e-4464-9afa-2315ba1f9d6a",
+								"exec": [
+									"console.log(\"IDSI01 = \"+pm.globals.get(\"IDSI01\"));",
+									"",
+									"if (pm.environment.get(\"IDSI01\") === undefined && pm.response.to.have.status(200)){",
+									"    var jsonData = pm.response.json();",
+									"// TODO: jsonData might be an array of resources - need to detect and iterate if so",
+									"",
+									"    if (Array.isArray(jsonData) && (jsonData.length > 1)) {",
+									"        pm.globals.set(\"IDSI01\", jsonData[0].id);",
+									"        pm.globals.set(\"IDSI02\", jsonData[1].id);",
+									"        pm.test(\"IDSI01 and IDSI02 set\", function () {",
+									"            return true;",
+									"        });",
+									"            ",
+									"",
+									"    ",
+									"    }",
+									"    else {",
+									"        pm.test(\"An array with at least 2 elements is expected to run this tests, if your API can't return an Array, follow the documentation distributed togheter with this CTK and set the globals IDSI01 and IDSI02 manually\", function () {",
+									"            pm.expect(0).to.eql(1)",
+									"        });",
+									"    }",
+									"}",
+									"    ",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/{{IDSI02}}",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								"{{IDSI02}}"
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TC_ServiceInventory_N1 – Retrieve a service from its id",
+			"item": [
+				{
+					"name": "Retrieve a Service by it's ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8d0d423e-1696-4040-b96b-ca175abd632e",
+								"exec": [
+									"// See: https://www.getpostman.com/docs/v6/postman/scripts/postman_sandbox_api_reference",
+									"// Testing POST method on {{scheme}}://{{host}}:{{port}}/tmf-api/serviceOrdering/v3/serviceOrder",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"var instance = pm.response.json();",
+									"//var requiredAttributes = [ 'id','href','name','description','serviceState','category','startDate','serviceRelationship','serviceCharacteristic'];",
+									"var requiredAttributes = [ 'id','href','name','serviceState','category'];",
+									"pm.test('Instance has all mandatory attributes', function() { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) } );",
+									"",
+									"",
+									"",
+									"// Checking all remaining possible attributes for ServiceOrder, taken from the Swagger file",
+									"pm.test('Response has id attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"pm.test('Response has href attribute', function() { pm.expect(instance.href).to.be.a('string'); });",
+									"pm.test('Response has name attribute', function() { pm.expect(instance.name).to.be.a('string'); });",
+									"pm.test('Response has state attribute', function() { pm.expect(instance.serviceState).to.be.a('string') });",
+									"pm.test('Response has category attribute', function() { pm.expect(instance.category).to.be.a('string'); });",
+									"",
+									"if(instance.description){",
+									" pm.test('Response has description attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"}",
+									"if(instance.startDate){",
+									"   pm.test('Response has startDate attribute', function() { pm.expect(instance.startDate).to.be.a('string'); });",
+									"}",
+									"if(instance.serviceRelationship){",
+									"   pm.test('Response has Service Relationship attribute', function() { pm.expect(instance.serviceRelationship).to.be.an.instanceOf(Array); });",
+									"}",
+									"",
+									"//The body of the response matches the values set in the original request",
+									"",
+									"pm.test('id is ' + pm.globals.get(\"IDSI01\"), function() {pm.expect(instance.id) == pm.globals.get(\"IDSI01\");});",
+									"pm.test('name is set', function() {pm.globals.set('NAMESI01', instance.name); pm.expect(instance.name) == pm.globals.get(\"NAMESI01\");});",
+									"pm.test('description is set', function() {pm.globals.set('DESCRIPTIONSI01', instance.description); pm.expect(instance.description) == pm.globals.get(\"DESCRIPTIONSI01\");});",
+									"pm.test('state is set', function() {pm.globals.set('STATESI01', instance.serviceState); pm.expect(instance.serviceState) == pm.globals.get(\"STATESI01\");});",
+									"pm.test('category is set', function() {pm.globals.set('CATEGORYSI01', instance.category); pm.expect(instance.category) == pm.globals.get(\"CATEGORYSI01\");});",
+									"pm.test('startDate is set', function() {pm.globals.set('STARTDATESI01', instance.startDate); pm.expect(instance.startDate) == pm.globals.get(\"STARTDATESI01\");});",
+									"",
+									"//Service Specification sub-attributes.",
+									"",
+									"pm.test('serviceSpecification.id is set', function() {pm.globals.set('SERVICESPECIFICATION_IDSI01', instance.serviceSpecification.id); pm.expect(instance.serviceSpecification.id) == pm.globals.get(\"SERVICESPECIFICATION_IDSI01\");});",
+									"",
+									"//The Href can be different from server to server",
+									"pm.test('serviceSpecification.href is set', function() {pm.globals.set('SERVICESPECIFICATION_HREFSI01', instance.serviceSpecification.href); pm.expect(instance.serviceSpecification.href) == pm.globals.get(\"SERVICESPECIFICATION_HREFSI01\");});",
+									"",
+									"pm.test('serviceSpecification.version is set', function() {pm.globals.set('SERVICESPECIFICATION_VERSIONSI01', instance.serviceSpecification.version); pm.expect(instance.serviceSpecification.version) == pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI01\");});",
+									"",
+									"",
+									"//relatedParty sub-attributes.",
+									"",
+									"pm.test('relatedParty.id is set', function() {pm.globals.set('RELATEDPARTY_IDSI01', instance.relatedParty[0].id); pm.expect(instance.relatedParty.id) == pm.globals.get(\"RELATEDPARTY_IDSI01\");});",
+									"",
+									"//The Href can be different from server to server",
+									"pm.test('relatedParty.href is set', function() {pm.globals.set('RELATEDPARTY_HREFSI01', instance.relatedParty[0].href); pm.expect(instance.relatedParty.href) == pm.globals.get(\"RELATEDPARTY_HREFSI01\");});",
+									"",
+									"pm.test('relatedParty.name is set', function() {pm.globals.set('RELATEDPARTY_NAMESI01', instance.relatedParty[0].name); pm.expect(instance.relatedParty.name) == pm.globals.get(\"RELATEDPARTY_NAMESI01\");});",
+									"",
+									"",
+									"//Service Characteristic sub-attributes.",
+									"if(instance.serviceCharacteristic){",
+									"var serviceCharacteristic = instance.serviceCharacteristic[0];",
+									"pm.test('serviceCharacteristic.value is set', function() {pm.globals.set('SERVICECHARACTERISTIC_VALUESI01', serviceCharacteristic.value); pm.expect(instance.serviceCharacteristic.value) == pm.globals.get(\"SERVICECHARACTERISTIC_VALUESI01\");});",
+									"    ",
+									"",
+									"pm.test('serviceCharacteristic.name is set', function() {pm.globals.set('SERVICECHARACTERISTIC_NAMESI01', serviceCharacteristic.name); pm.expect(instance.serviceCharacteristic.name) == pm.globals.get(\"SERVICECHARACTERISTIC_NAMESI01\");});",
+									"",
+									"",
+									"}",
+									"//Service Relationship sub-attributes.",
+									"if(instance.serviceRelationship){",
+									"var serviceRelationship = instance.serviceRelationship[0];",
+									"",
+									"pm.test('serviceRelationship type is set', function() {pm.globals.set(\"SERVICERELATIONSHIP_TYPESI01\",serviceRelationship.type); pm.expect(serviceRelationship.type).to.be.a(\"string\");});",
+									"",
+									"pm.test('serviceRelationship service id is set', function() {pm.globals.set(\"SERVICERELATIONSHIP_TYPESI01\", serviceRelationship.service.id); pm.expect(serviceRelationship.service.id) == pm.globals.get(\"SERVICERELATIONSHIP_TYPESI01\");});",
+									"",
+									"pm.test('serviceRelationship service href is set', function() {pm.globals.set(\"SERVICERELATIONSHIP_SERVICE_HREFSI01\", serviceRelationship.service.href); pm.expect(serviceRelationship.service.href).to.be.a('string');});",
+									"}",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/{{IDSI01}}",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								"{{IDSI01}}"
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a Service by it's ID 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a8dd18a5-4085-43e7-b2f0-8249f4d3616e",
+								"exec": [
+									"// See: https://www.getpostman.com/docs/v6/postman/scripts/postman_sandbox_api_reference",
+									"// Testing POST method on {{scheme}}://{{host}}:{{port}}/tmf-api/serviceOrdering/v3/serviceOrder",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"var instance = pm.response.json();",
+									"",
+									"//var requiredAttributes = [ 'id','href','name','description','state','category','startDate','serviceRelationship','serviceCharacteristic'];",
+									"var requiredAttributes = [ 'id','href','name','serviceState','category'];",
+									"pm.test('Instance has all mandatory attributes', function() { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) } );",
+									"",
+									"// Checking all remaining possible attributes for ServiceOrder, taken from the Swagger file",
+									"pm.test('Response has id attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"pm.test('Response has href attribute', function() { pm.expect(instance.href).to.be.a('string'); });",
+									"pm.test('Response has name attribute', function() { pm.expect(instance.name).to.be.a('string'); });",
+									"pm.test('Response has state attribute', function() { pm.expect(instance.serviceState).to.be.a('string') });",
+									"pm.test('Response has category attribute', function() { pm.expect(instance.category).to.be.a('string'); });",
+									"",
+									"if(instance.description){",
+									" pm.test('Response has description attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"}",
+									"if(instance.startDate){",
+									"   pm.test('Response has startDate attribute', function() { pm.expect(instance.startDate).to.be.a('string'); });",
+									"}",
+									"if(instance.serviceRelationship){",
+									"   pm.test('Response has Service Relationship attribute', function() { pm.expect(instance.serviceRelationship).to.be.an.instanceOf(Array); });",
+									"}",
+									"",
+									"",
+									"//The body of the response matches the values set in the original request",
+									"",
+									"pm.test('id is ' + pm.globals.get(\"IDSI02\"), function() {pm.expect(instance.id) == pm.globals.get(\"IDSI02\");});",
+									"pm.test('name is set', function() {pm.globals.set('NAMESI02', instance.name); pm.expect(instance.name) == pm.globals.get(\"NAMESI02\");});",
+									"pm.test('description is set', function() {pm.globals.set('DESCRIPTIONSI02', instance.description); pm.expect(instance.description) == pm.globals.get(\"DESCRIPTIONSI02\");});",
+									"pm.test('state is set', function() {pm.globals.set('STATESI02', instance.serviceState); pm.expect(instance.serviceState) == pm.globals.get(\"STATESI02\");});",
+									"pm.test('category is set', function() {pm.globals.set('CATEGORYSI02', instance.category); pm.expect(instance.category) == pm.globals.get(\"CATEGORYSI02\");});",
+									"pm.test('startDate is set', function() {pm.globals.set('STARTDATESI02', instance.startDate); pm.expect(instance.startDate) == pm.globals.get(\"STARTDATESI02\");});",
+									"",
+									"//Service Specification sub-attributes.",
+									"",
+									"pm.test('serviceSpecification.id is set', function() {pm.globals.set('SERVICESPECIFICATION_IDSI02', instance.serviceSpecification.id); pm.expect(instance.serviceSpecification.id) == pm.globals.get(\"SERVICESPECIFICATION_IDSI02\");});",
+									"",
+									"//The Href can be different from server to server",
+									"pm.test('serviceSpecification.href is set', function() {pm.globals.set('SERVICESPECIFICATION_HREFSI02', instance.serviceSpecification.href); pm.expect(instance.serviceSpecification.href) == pm.globals.get(\"SERVICESPECIFICATION_HREFSI02\");});",
+									"",
+									"pm.test('serviceSpecification.version is set', function() {pm.globals.set('SERVICESPECIFICATION_VERSIONSI02', instance.serviceSpecification.version); pm.expect(instance.serviceSpecification.version) == pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI02\");});",
+									"",
+									"//relatedParty sub-attributes.",
+									"",
+									"pm.test('relatedParty.id is setololololo', function() {pm.globals.set('RELATEDPARTY_IDSI02', instance.relatedParty[0].id); pm.expect(instance.relatedParty.id) == pm.globals.get(\"RELATEDPARTY_IDSI02\");});",
+									"//console.log(\"id=\"+instance.relatedParty[0].id);",
+									"//The Href can be different from server to server",
+									"pm.test('relatedParty.href is set', function() {pm.globals.set('RELATEDPARTY_HREFSI02', instance.relatedParty[0].href); pm.expect(instance.relatedParty.href) == pm.globals.get(\"RELATEDPARTY_HREFSI02\");});",
+									"",
+									"pm.test('relatedParty.name is set', function() {pm.globals.set('RELATEDPARTY_NAMESI02', instance.relatedParty[0].name); pm.expect(instance.relatedParty.name) == pm.globals.get(\"RELATEDPARTY_NAMESI02\");});",
+									"",
+									"",
+									"//Service Characteristic sub-attributes.",
+									"if(instance.serviceCharacteristic){",
+									"var serviceCharacteristic = instance.serviceCharacteristic[0];",
+									"pm.test('serviceCharacteristic.value is set', function() {pm.globals.set('SERVICECHARACTERISTIC_VALUESI01', serviceCharacteristic.value); pm.expect(instance.serviceCharacteristic.value) == pm.globals.get(\"SERVICECHARACTERISTIC_VALUESI01\");});",
+									"    ",
+									"",
+									"pm.test('serviceCharacteristic.name is set', function() {pm.globals.set('SERVICECHARACTERISTIC_NAMESI01', serviceCharacteristic.name); pm.expect(instance.serviceCharacteristic.name) == pm.globals.get(\"SERVICECHARACTERISTIC_NAMESI01\");});",
+									"",
+									"",
+									"}",
+									"",
+									"",
+									"//Service Relationship sub-attributes.",
+									"if(instance.serviceRelationship){",
+									"var serviceRelationship = instance.serviceRelationship[0];",
+									"",
+									"pm.test('serviceRelationship type is set', function() {pm.globals.set(\"SERVICERELATIONSHIP_TYPESI01\",serviceRelationship.type); pm.expect(serviceRelationship.type).to.be.a(\"string\");});",
+									"",
+									"pm.test('serviceRelationship service id is set', function() {pm.globals.set(\"SERVICERELATIONSHIP_TYPESI01\", serviceRelationship.service.id); pm.expect(serviceRelationship.service.id) == pm.globals.get(\"SERVICERELATIONSHIP_TYPESI01\");});",
+									"",
+									"pm.test('serviceRelationship service href is set', function() {pm.globals.set(\"SERVICERELATIONSHIP_SERVICE_HREFSI01\", serviceRelationship.service.href); pm.expect(serviceRelationship.service.href).to.be.a('string');});",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/{{IDSI02}}",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								"{{IDSI02}}"
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				}
+			],
+			"description": "This test case needs to have a service pre-existing already on the server side"
+		},
+		{
+			"name": "TC_ServiceInventory_N2 – Search for Service with specific characteristics",
+			"item": [
+				{
+					"name": "Retrieve a list of services by one characteristic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8b2630e-996b-4f05-bf51-c0db23757562",
+								"exec": [
+									"// See: https://www.getpostman.com/docs/v6/postman/scripts/postman_sandbox_api_reference",
+									"// Testing POST method on {{scheme}}://{{host}}:{{port}}/tmf-api/serviceOrdering/v3/serviceOrder",
+									"",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Category Service 1 must be equal to Category Service 2 if fail consult documentation\", function () {",
+									"    return (pm.globals.get(\"CATEGORYSI01\") == pm.globals.get(\"CATEGORYSI02\"));",
+									"});",
+									"",
+									"",
+									"",
+									"var jsonData = pm.response.json();",
+									"// TODO: jsonData might be an array of resources - need to detect and iterate if so",
+									"",
+									"if (Array.isArray(jsonData) && (jsonData.length > 0)) {",
+									"  jsonData.forEach(function(instance, index) {",
+									"   // var requiredAttributes = [ 'id','href','name','description','serviceState','category','startDate','serviceRelationship','serviceCharacteristic'];",
+									"   var requiredAttributes = [ 'id','href','name','serviceState','category'];",
+									"    pm.test('Instance has all mandatory attributes', function() { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) } );",
+									"    ",
+									"    // Checking all remaining possible attributes for ServiceOrder, taken from the Swagger file",
+									"    pm.test('Response has id attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"    pm.test('Response has href attribute', function() { pm.expect(instance.href).to.be.a('string'); });",
+									"    pm.test('Response has name attribute', function() { pm.expect(instance.name).to.be.a('string'); });",
+									"    pm.test('Response has state attribute', function() { pm.expect(instance.serviceState).to.be.a('string') });",
+									"    pm.test('Response has category attribute', function() { pm.expect(instance.category).to.be.a('string'); });",
+									"   ",
+									"    if(instance.description){",
+									" pm.test('Response has description attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"}",
+									"if(instance.startDate){",
+									"   pm.test('Response has startDate attribute', function() { pm.expect(instance.startDate).to.be.a('string'); });",
+									"}",
+									"if(instance.serviceRelationship){",
+									"   pm.test('Response has Service Relationship attribute', function() { pm.expect(instance.serviceRelationship).to.be.an.instanceOf(Array); });",
+									"}",
+									"    // Individualized tests",
+									"    if (instance.id == pm.globals.get(\"IDSI01\")){",
+									"            ",
+									"            //The body of the response matches the values set in the original request",
+									"        ",
+									"        pm.test('id is ' + pm.globals.get(\"IDSI01\"), function() {pm.expect(instance.id) == pm.globals.get(\"IDSI01\");});",
+									"        pm.test('name is ' + pm.globals.get(\"NAMESI01\"), function() {pm.expect(instance.name) == pm.globals.get(\"NAMESI01\");});",
+									"        pm.test('description is ' + pm.globals.get(\"DESCRIPTIONSI01\"), function() {pm.expect(instance.description) == pm.globals.get(\"DESCRIPTIONSI01\");});",
+									"        pm.test('state is ' + pm.globals.get(\"STATESI01\"), function() {pm.expect(instance.serviceState) == pm.globals.get(\"STATESI01\");});",
+									"        pm.test('category is ' + pm.globals.get(\"CATEGORYSI01\"), function() {pm.expect(instance.category) == pm.globals.get(\"CATEGORYSI01\");});",
+									"        pm.test('startDate is ' + pm.globals.get(\"STARTDATESI01\"), function() {pm.expect(instance.startDate) == pm.globals.get(\"STARTDATESI01\");});",
+									"        ",
+									"        //Service Specification sub-attributes.",
+									"        ",
+									"        pm.test('serviceSpecification.id is ' + pm.globals.get(\"SERVICESPECIFICATION_IDSI01\"), function() {pm.expect(instance.serviceSpecification.id) == pm.globals.get(\"SERVICESPECIFICATION_IDSI01\")});",
+									"        ",
+									"        //The Href can be different from server to server",
+									"        pm.test('serviceSpecification.href is ' + pm.globals.get(\"SERVICESPECIFICATION_HREFSI01\"), function() {pm.expect(instance.serviceSpecification.href) == pm.globals.get(\"SERVICESPECIFICATION_HREFSI01\");});",
+									"        ",
+									"        pm.test('serviceSpecification.version is ' + pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI01\"), function() {pm.expect(instance.serviceSpecification.version) == pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI01\")});",
+									"        ",
+									"        ",
+									"        //Service Characteristic sub-attributes.",
+									"       if(instance.serviceCharacteristic){",
+									"var serviceCharacteristic = instance.serviceCharacteristic[0];",
+									"pm.test('serviceCharacteristic.value is set', function() {pm.globals.set('SERVICECHARACTERISTIC_VALUESI01', serviceCharacteristic.value); pm.expect(instance.serviceCharacteristic.value) == pm.globals.get(\"SERVICECHARACTERISTIC_VALUESI01\");});",
+									"    ",
+									"",
+									"pm.test('serviceCharacteristic.name is set', function() {pm.globals.set('SERVICECHARACTERISTIC_NAMESI01', serviceCharacteristic.name); pm.expect(instance.serviceCharacteristic.name) == pm.globals.get(\"SERVICECHARACTERISTIC_NAMESI01\");});",
+									"",
+									"",
+									"}",
+									"        ",
+									"    }",
+									"    if (instance.id == pm.globals.get(\"IDSI02\")){",
+									"        ",
+									"              //The body of the response matches the values set in the original request",
+									"        ",
+									"         pm.test('id is ' + pm.globals.get(\"IDSI02\"), function() {pm.expect(instance.id) == pm.globals.get(\"IDSI02\");});",
+									"        pm.test('name is ' + pm.globals.get(\"NAMESI02\"), function() {pm.expect(instance.name) == pm.globals.get(\"NAMESI02\");});",
+									"        pm.test('description is ' + pm.globals.get(\"DESCRIPTIONSI02\"), function() {pm.expect(instance.description) == pm.globals.get(\"DESCRIPTIONSI02\");});",
+									"        pm.test('state is ' + pm.globals.get(\"STATESI02\"), function() {pm.expect(instance.serviceState) == pm.globals.get(\"STATESI02\");});",
+									"        pm.test('category is ' + pm.globals.get(\"CATEGORYSI02\"), function() {pm.expect(instance.category) == pm.globals.get(\"CATEGORYSI02\");});",
+									"       pm.test('startDate is ' + pm.globals.get(\"STARTDATESI02\"), function() {pm.expect(instance.startDate) == pm.globals.get(\"STARTDATESI02\");});",
+									"        ",
+									"        //Service Specification sub-attributes.",
+									"        ",
+									"        pm.test('serviceSpecification.id is ' + pm.globals.get(\"SERVICESPECIFICATION_IDSI02\"), function() {pm.expect(instance.serviceSpecification.id) == pm.globals.get(\"SERVICESPECIFICATION_IDSI02\")});",
+									"        ",
+									"        //The Href can be different from server to server",
+									"        pm.test('serviceSpecification.href is ' + pm.globals.get(\"SERVICESPECIFICATION_HREFSI02\"), function() {pm.expect(instance.serviceSpecification.href) == pm.globals.get(\"SERVICESPECIFICATION_HREFSI02\");});",
+									"        ",
+									"        pm.test('serviceSpecification.version is ' + pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI02\"), function() {pm.expect(instance.serviceSpecification.version) == pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI02\")});",
+									"        ",
+									"        ",
+									"        //Service Characteristic sub-attributes.",
+									"       if(instance.serviceCharacteristic){",
+									"        var serviceCharacteristic = instance.serviceCharacteristic[0];",
+									"         pm.test('serviceCharacteristic.value is set', function() {pm.globals.set('SERVICECHARACTERISTIC_VALUESI01', serviceCharacteristic.value); pm.expect(instance.serviceCharacteristic.value) == pm.globals.get(\"SERVICECHARACTERISTIC_VALUESI01\");});",
+									"    ",
+									"",
+									"         pm.test('serviceCharacteristic.name is set', function() {pm.globals.set('SERVICECHARACTERISTIC_NAMESI01', serviceCharacteristic.name); pm.expect(instance.serviceCharacteristic.name) == pm.globals.get(\"SERVICECHARACTERISTIC_NAMESI01\");});",
+									"",
+									"",
+									"}",
+									"        ",
+									"    }",
+									"   ",
+									"  });",
+									"}",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/?serviceSpecification.id={{SERVICESPECIFICATION_IDSI01}}",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								""
+							],
+							"query": [
+								{
+									"key": "serviceSpecification.id",
+									"value": "{{SERVICESPECIFICATION_IDSI01}}"
+								}
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a Filtered List with only one Service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f3b741ad-e6be-4f98-ab32-ff2e652d8af2",
+								"exec": [
+									"// See: https://www.getpostman.com/docs/v6/postman/scripts/postman_sandbox_api_reference",
+									"// Testing POST method on {{scheme}}://{{host}}:{{port}}/tmf-api/serviceOrdering/v3/serviceOrder",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"var jsonData = pm.response.json();",
+									"// TODO: jsonData might be an array of resources - need to detect and iterate if so",
+									"",
+									"if (Array.isArray(jsonData) && (jsonData.length > 0)) {",
+									"  jsonData.forEach(function(instance, index) {",
+									"   // var requiredAttributes = [ 'id','href','name','description','serviceState','category','startDate','serviceRelationship','serviceCharacteristic'];",
+									"     var requiredAttributes = [ 'id','href','name','serviceState','category'];",
+									"    pm.test('Instance has all mandatory attributes', function() { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) } );",
+									"    ",
+									"    // Checking all remaining possible attributes for ServiceOrder, taken from the Swagger file",
+									"    pm.test('Response has id attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"    pm.test('Response has href attribute', function() { pm.expect(instance.href).to.be.a('string'); });",
+									"    pm.test('Response has name attribute', function() { pm.expect(instance.name).to.be.a('string'); });",
+									"    pm.test('Response has state attribute', function() { pm.expect(instance.serviceState).to.be.a('string') });",
+									"    pm.test('Response has category attribute', function() { pm.expect(instance.category).to.be.a('string'); });",
+									"   ",
+									"    if(instance.description){",
+									" pm.test('Response has description attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"}",
+									"if(instance.startDate){",
+									"   pm.test('Response has startDate attribute', function() { pm.expect(instance.startDate).to.be.a('string'); });",
+									"}",
+									"if(instance.serviceRelationship){",
+									"   pm.test('Response has Service Relationship attribute', function() { pm.expect(instance.serviceRelationship).to.be.an.instanceOf(Array); });",
+									"}",
+									"",
+									"    ",
+									"    // Individualized tests",
+									"    if (instance.id == pm.globals.get(\"IDSI01\")){",
+									"            ",
+									"            //The body of the response matches the values set in the original request",
+									"        ",
+									"        pm.test('id is ' + pm.globals.get(\"IDSI01\"), function() {pm.expect(instance.id) == pm.globals.get(\"IDSI01\");});",
+									"        pm.test('name is ' + pm.globals.get(\"NAMESI01\"), function() {pm.expect(instance.name) == pm.globals.get(\"NAMESI01\");});",
+									"        pm.test('description is ' + pm.globals.get(\"DESCRIPTIONSI01\"), function() {pm.expect(instance.description) == pm.globals.get(\"DESCRIPTIONSI01\");});",
+									"        pm.test('state is ' + pm.globals.get(\"STATESI01\"), function() {pm.expect(instance.serviceState) == pm.globals.get(\"STATESI01\");});",
+									"        pm.test('category is ' + pm.globals.get(\"CATEGORYSI01\"), function() {pm.expect(instance.category) == pm.globals.get(\"CATEGORYSI01\");});",
+									"        pm.test('startDate is ' + pm.globals.get(\"STARTDATESI01\"), function() {pm.expect(instance.startDate) == pm.globals.get(\"STARTDATESI01\");});",
+									"        ",
+									"        //Service Specification sub-attributes.",
+									"        ",
+									"        pm.test('serviceSpecification.id is ' + pm.globals.get(\"SERVICESPECIFICATION_IDSI01\"), function() {pm.expect(instance.serviceSpecification.id) == pm.globals.get(\"SERVICESPECIFICATION_IDSI01\")});",
+									"        ",
+									"        //The Href can be different from server to server",
+									"        pm.test('serviceSpecification.href is ' + pm.globals.get(\"SERVICESPECIFICATION_HREFSI01\"), function() {pm.expect(instance.serviceSpecification.href) == pm.globals.get(\"SERVICESPECIFICATION_HREFSI01\");});",
+									"        ",
+									"        pm.test('serviceSpecification.version is ' + pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI01\"), function() {pm.expect(instance.serviceSpecification.version) == pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI01\")});",
+									"        ",
+									"        ",
+									"        //Service Characteristic sub-attributes.",
+									"      if(instance.serviceCharacteristic){",
+									"        var serviceCharacteristic = instance.serviceCharacteristic[0];",
+									"        pm.test('serviceCharacteristic.value is set', function() {pm.globals.set('SERVICECHARACTERISTIC_VALUESI01', serviceCharacteristic.value); pm.expect(instance.serviceCharacteristic.value) == pm.globals.get(\"SERVICECHARACTERISTIC_VALUESI01\");});",
+									"    ",
+									"",
+									"        pm.test('serviceCharacteristic.name is set', function() {pm.globals.set('SERVICECHARACTERISTIC_NAMESI01', serviceCharacteristic.name); pm.expect(instance.serviceCharacteristic.name) == pm.globals.get(\"SERVICECHARACTERISTIC_NAMESI01\");});",
+									"",
+									"",
+									"}",
+									"        ",
+									"    }",
+									"    ",
+									"    if (instance.id == pm.globals.get(\"IDSI02\")){",
+									"        ",
+									"       pm.test('Service ID '+ pm.globals.get(\"IDSI02\")  +' was not supposed to be returned by this filtered search, you need to have services with 2 different states', function() {",
+									"           pm.expect.fail();",
+									"       });",
+									"       ",
+									"    }",
+									"   ",
+									"  });",
+									"}",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"disabled": false
+							},
+							{
+								"key": "Range",
+								"value": "1-10",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/?serviceState={{STATESI01}}&limit=10",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								""
+							],
+							"query": [
+								{
+									"key": "serviceState",
+									"value": "{{STATESI01}}"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a Filtered List with only one Service using name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4e9c4224-1fad-48df-8ece-8f74a146a57c",
+								"exec": [
+									"// See: https://www.getpostman.com/docs/v6/postman/scripts/postman_sandbox_api_reference",
+									"// Testing POST method on {{scheme}}://{{host}}:{{port}}/tmf-api/serviceOrdering/v3/serviceOrder",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"var jsonData = pm.response.json();",
+									"// TODO: jsonData might be an array of resources - need to detect and iterate if so",
+									"",
+									"if (Array.isArray(jsonData) && (jsonData.length > 0)) {",
+									"  jsonData.forEach(function(instance, index) {",
+									"   // var requiredAttributes = [ 'id','href','name','description','serviceState','category','startDate','serviceRelationship','serviceCharacteristic'];",
+									"    var requiredAttributes = [ 'id','href','name','serviceState','category'];",
+									"    pm.test('Instance has all mandatory attributes', function() { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) } );",
+									"    ",
+									"    // Checking all remaining possible attributes for ServiceOrder, taken from the Swagger file",
+									"    pm.test('Response has id attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"    pm.test('Response has href attribute', function() { pm.expect(instance.href).to.be.a('string'); });",
+									"    pm.test('Response has name attribute', function() { pm.expect(instance.name).to.be.a('string'); });",
+									"    pm.test('Response has state attribute', function() { pm.expect(instance.serviceState).to.be.a('string') });",
+									"    pm.test('Response has category attribute', function() { pm.expect(instance.category).to.be.a('string'); });",
+									"    ",
+									"   if(instance.description){",
+									"     pm.test('Response has description attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"    }",
+									"    if(instance.startDate){",
+									"     pm.test('Response has startDate attribute', function() { pm.expect(instance.startDate).to.be.a('string'); });",
+									"    }",
+									"    if(instance.serviceRelationship){",
+									"     pm.test('Response has Service Relationship attribute', function() { pm.expect(instance.serviceRelationship).to.be.an.instanceOf(Array); });",
+									"    }",
+									"",
+									"    ",
+									"    ",
+									"    // Individualized tests",
+									"    if (instance.id == pm.globals.get(\"IDSI01\")){",
+									"        ",
+									"       pm.test('Service ID '+ pm.globals.get(\"IDSI01\")  +' was not supposed to be returned by this filtered search, you need to have services with 2 different names', function() {",
+									"           pm.expect.fail();",
+									"       });",
+									"       ",
+									"    }",
+									"    if (instance.id == pm.globals.get(\"IDSI02\")){",
+									"            ",
+									"            //The body of the response matches the values set in the original request",
+									"        ",
+									"        pm.test('id is ' + pm.globals.get(\"IDSI02\"), function() {pm.expect(instance.id) == pm.globals.get(\"IDSI02\");});",
+									"        pm.test('name is ' + pm.globals.get(\"NAMESI02\"), function() {pm.expect(instance.name) == pm.globals.get(\"NAMESI02\");});",
+									"        pm.test('description is ' + pm.globals.get(\"DESCRIPTIONSI02\"), function() {pm.expect(instance.description) == pm.globals.get(\"DESCRIPTIONSI02\");});",
+									"        pm.test('state is ' + pm.globals.get(\"STATESI02\"), function() {pm.expect(instance.serviceState) == pm.globals.get(\"STATESI02\");});",
+									"        pm.test('category is ' + pm.globals.get(\"CATEGORYSI02\"), function() {pm.expect(instance.category) == pm.globals.get(\"CATEGORYSI02\");});",
+									"     //   pm.test('startDate is ' + pm.globals.get(\"STARTDATESI02\"), function() {pm.expect(instance.startDate) == pm.globals.get(\"STARTDATESI02\");});",
+									"        ",
+									"        //Service Specification sub-attributes.",
+									"        ",
+									"        pm.test('serviceSpecification.id is ' + pm.globals.get(\"SERVICESPECIFICATION_IDSI02\"), function() {pm.expect(instance.serviceSpecification.id) == pm.globals.get(\"SERVICESPECIFICATION_IDSI02\")});",
+									"        ",
+									"        //The Href can be different from server to server",
+									"        pm.test('serviceSpecification.href is ' + pm.globals.get(\"SERVICESPECIFICATION_HREFSI02\"), function() {pm.expect(instance.serviceSpecification.href) == pm.globals.get(\"SERVICESPECIFICATION_HREFSI02\");});",
+									"        ",
+									"        pm.test('serviceSpecification.version is ' + pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI02\"), function() {pm.expect(instance.serviceSpecification.version) == pm.globals.get(\"SERVICESPECIFICATION_VERSIONSI02\")});",
+									"        ",
+									"        ",
+									"        //Service Characteristic sub-attributes.",
+									"      if(instance.serviceCharacteristic){",
+									"var serviceCharacteristic = instance.serviceCharacteristic[0];",
+									"pm.test('serviceCharacteristic.value is set', function() {pm.globals.set('SERVICECHARACTERISTIC_VALUESI01', serviceCharacteristic.value); pm.expect(instance.serviceCharacteristic.value) == pm.globals.get(\"SERVICECHARACTERISTIC_VALUESI01\");});",
+									"    ",
+									"",
+									"pm.test('serviceCharacteristic.name is set', function() {pm.globals.set('SERVICECHARACTERISTIC_NAMESI01', serviceCharacteristic.name); pm.expect(instance.serviceCharacteristic.name) == pm.globals.get(\"SERVICECHARACTERISTIC_NAMESI01\");});",
+									"",
+									"",
+									"}",
+									"        ",
+									"    }",
+									"   ",
+									"  });",
+									"}",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service?relatedParty.id={{RELATEDPARTY_IDSI02}}&limit=3",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service"
+							],
+							"query": [
+								{
+									"key": "relatedParty.id",
+									"value": "{{RELATEDPARTY_IDSI02}}"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TC_ServiceInventoru_N3 – Filtered retrieval of service data",
+			"item": [
+				{
+					"name": "Filtered fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da1d6326-158e-43ae-827d-f6e274206171",
+								"exec": [
+									"// See: https://www.getpostman.com/docs/v6/postman/scripts/postman_sandbox_api_reference",
+									"// Testing POST method on {{scheme}}://{{host}}:{{port}}/tmf-api/serviceOrdering/v3/serviceOrder",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//console.log(\"check length\"+jsonData.length);",
+									"var instance = pm.response.json();",
+									"//console.log(\"check\"+Array.isArray(jsonData));",
+									"//if (Array.isArray(jsonData) && (jsonData.length > 0)) {",
+									"    console.log(\"hello\");",
+									"// jsonData.forEach(function(instance, index) {",
+									"// TODO: jsonData might be an array of resources - need to detect and iterate if so",
+									"",
+									"",
+									"var requiredAttributes = [ 'id','name','serviceState'];",
+									"pm.test('Instance has all mandatory attributes', function() { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) } );",
+									"",
+									"//We expect only 2 fields",
+									"",
+									"pm.test('Instance has only filtered attributes', function() { pm.expect(Object.keys(instance).length).to.eql(requiredAttributes.length) });",
+									"",
+									"// Checking all remaining possible attributes for ServiceOrder, taken from the Swagger file",
+									"",
+									"pm.test('Response has name attribute', function() { pm.expect(instance.name).to.be.a('string'); });",
+									"",
+									"pm.test('Response has state attribute', function() { pm.expect(instance.serviceState).to.be.a('string') });",
+									"",
+									"",
+									"",
+									"// Individualized tests",
+									"if (instance.id == pm.globals.get(\"IDSI01\")){",
+									"        ",
+									"        //The body of the response matches the values set in the original request",
+									"    ",
+									"     pm.test('Service ID ' + pm.globals.get(\"IDSI01\") + ' was not supposed to be returned by this filtered search', function() {",
+									"           pm.expect.fail();",
+									"       });",
+									"    ",
+									"}",
+									"if (instance.id == pm.globals.get(\"IDSI02\")){",
+									"    ",
+									"          //The body of the response matches the values set in the original request",
+									"    ",
+									"    //Expected Attributes",
+									"    pm.test('name is ' + pm.globals.get(\"NAMESI02\"), function() {pm.expect(instance.name) == pm.globals.get(\"NAMESI02\");});",
+									"    pm.test('state is ' + pm.globals.get(\"STATESI02\"), function() {pm.expect(instance.serviceState) == pm.globals.get(\"STATESI02\");});",
+									"    ",
+									"    //Unexpected Attributes",
+									"}",
+									"  ",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Length",
+								"value": "1-100",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/{{IDSI02}}?fields=name,serviceState",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								"{{IDSI02}}"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "name,serviceState"
+								}
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TC_ServiceInventory_N4 – Filtered Search and Filtered data response",
+			"item": [
+				{
+					"name": "Filtered search by state and filtered fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7369e580-fb6e-483e-9093-6e7c22acabe1",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"var jsonData = pm.response.json();",
+									"// TODO: jsonData might be an array of resources - need to detect and iterate if so",
+									"",
+									"if (Array.isArray(jsonData) && (jsonData.length > 0)) {",
+									"  ",
+									"  jsonData.forEach(function(instance, index) {",
+									"      ",
+									"      var requiredAttributes = [ 'id','href'];",
+									"      pm.test('Instance has all mandatory attributes', function() { pm.expect(Object.keys(instance)).to.include.members(requiredAttributes) } );",
+									"      //We expect only 2 fields",
+									"      pm.test('Instance has only filtered attributes', function() { pm.expect(Object.keys(instance).length).to.eql(requiredAttributes.length) });",
+									"      ",
+									"      ",
+									"      pm.test('Response has id attribute', function() { pm.expect(instance.id).to.be.a('string'); });",
+									"      pm.test('Response has href attribute', function() { pm.expect(instance.href).to.be.a('string'); });",
+									"      ",
+									"      ",
+									"      if (instance.id == pm.globals.get(\"IDSI01\")){",
+									"          pm.test('id is ' + pm.globals.get(\"IDSI01\"), function() {pm.expect(instance.id) == pm.globals.get(\"IDSI01\");});",
+									"      }",
+									"      ",
+									"      ",
+									"      if (instance.id == pm.globals.get(\"IDSI02\")){",
+									"        ",
+									"        //The body of the response matches the values set in the original request",
+									"        pm.test('Service ID' + pm.globals.get(\"IDSI02\") +' was not supposed to be returned by this filtered search', function() {",
+									"           pm.expect.fail();",
+									"       });",
+									"    ",
+									"}",
+									"      ",
+									"      ",
+									"      ",
+									"      ",
+									"  });",
+									"    ",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;charset=utf-8",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain"
+							},
+							{
+								"key": "Range",
+								"value": "1-5",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "limit",
+								"value": "50",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"externalId\": \"OrangeBSS000\",\n  \"priority\": \"1\",\n  \"description\": \"Service order description\",\n  \"category\": \"CloudServiceOrdering\",\n  \"requestedStartDate\": \"2018-01-15T09:37:40.508Z\",\n  \"requestedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"orderDate\": \"2018-01-15T09:37:40.508Z\",\n  \"startDate\": \"2018-01-15T09:37:40.508Z\",\n  \"expectedCompletionDate\": \"2018-01-15T09:37:40.508Z\",\n  \"notificationContact\": \"email@domain.tld\",\n  \n  \"@type\": \"standard\",\n  \"orderItem\": [\n  {\n    \"id\": \"1\",\n    \"action\": \"add\",\n    \"@type\": \"standard\",\n    \"service\": {\n    \"serviceState\": \"Active\",\n    \"serviceCharacteristic\": [\n    {\n      \"name\": \"vCPE_IP\",\n      \"valueType\": \"String\",\n      \"value\": {\n        \"@type\": \"IPAddress\",\n        \"@schemaLocation\": \"http....\",\n        \"vCPE_IP\": \"193.218.236.21\"\n      }\n    }\n    ],\n    \"serviceSpecification\": {\n    \"id\": \"12\",\n    \"href\": \"http://...:serviceSpecification/12\",\n    \"name\": \"vCPE\",\n    \"version\": \"1\",\n    \"@type\": \"vCPE\",\n    \"@schemaLocation\": \"http...\"\n    }\n  }\n}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/?serviceState={{STATESI01}}&fields=id,href&limit=4",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								""
+							],
+							"query": [
+								{
+									"key": "serviceState",
+									"value": "{{STATESI01}}"
+								},
+								{
+									"key": "fields",
+									"value": "id,href"
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						},
+						"description": "This operation creates a service order entity.\nThe specification document provides the list of mandatory and non mandatory attributes when creating a ServiceOrder, including any possible rule conditions and applicable default values.\nPOST should be used without specifying the id and the href, the Service Order Management system is in charge of generating the id + href for the ServiceOrder.\n\nSpecific business errors for current operation will be encapsulated in\n\nHTTP Response 422 Unprocessable entity\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TC_ServiceInventory_E1 – Unknown Service",
+			"item": [
+				{
+					"name": "Filtered search by state and filtered fields Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b8fdc734-7bb5-4455-9542-ccdd3c017306",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServiceInventoryAPI}}/service/{{ID404}}",
+							"host": [
+								"{{ServiceInventoryAPI}}"
+							],
+							"path": [
+								"service",
+								"{{ID404}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
